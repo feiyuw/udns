@@ -1,0 +1,9 @@
+*.rpm
+*.swp
+*.swo
+.vscode/
+.cache/
+/pkg/
+/bin/
+/udns
+.DS_Store
