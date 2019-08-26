@@ -28,7 +28,7 @@ func TestLogger(t *testing.T) {
 		So(logLevel, ShouldEqual, FATAL)
 	})
 
-	Convey("other message show in debug level", t, func() {
+	Convey("message show in different level", t, func() {
 		SetLogLevel("debug")
 		defer buf.Reset()
 
@@ -56,5 +56,12 @@ func TestLogger(t *testing.T) {
 		Error("xxx", "don")
 		So(buf.String(), ShouldEqual, "E\txxx\tdon\n")
 		buf.Reset()
+	})
+
+	Convey("fatal log", t, func() {
+		So(func() int {
+			Fatal("xxx", "panic error")
+			return 0
+		}, ShouldPanic)
 	})
 }
