@@ -57,11 +57,4 @@ func TestLogger(t *testing.T) {
 		So(buf.String(), ShouldEqual, "E\txxx\tdon\n")
 		buf.Reset()
 	})
-
-	Convey("fatal log", t, func() {
-		So(func() int {
-			Fatal("xxx", "panic error")
-			return 0
-		}, ShouldPanic)
-	})
 }
