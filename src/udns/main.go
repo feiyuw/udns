@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
+	"udns/logger"
 )
 
 func main() {
-	fmt.Println("hello world")
+	addr := ":53"
+	logger.Infof("Listen to UDP '%s'", addr)
 }

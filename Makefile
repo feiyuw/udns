@@ -16,7 +16,7 @@ VERSION:="master"
 endif
 TARGET:="udns"
 
-all: clean build
+all: clean build test
 
 clean:
 	@echo cleaning...
@@ -24,7 +24,7 @@ clean:
 
 test:
 	@echo unit testing...
-	go test udns/...
+	cd src/udns; go test udns/...
 
 build:
 	@echo building...
