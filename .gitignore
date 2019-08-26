@@ -6,4 +6,5 @@
 /pkg/
 /bin/
 /udns
+vendor/
 .DS_Store
