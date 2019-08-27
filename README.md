@@ -4,11 +4,11 @@
 
 ## Features
 
-- [ ] support A record
+- [*] support A record
+- [*] support to read DNS records from local file
+- [*] support to forward to parent DNS server if not found
+- [*] support to fetch myip by "my.ip"
 - [ ] support CNAME record
-- [ ] support to read DNS records from local file
-- [ ] support to forward to upstream DNS server if not found
-- [ ] support to fetch myip by "my.ip"
 
 ## Installation
 

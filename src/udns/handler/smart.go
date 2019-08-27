@@ -18,8 +18,8 @@ func OnSmartDNSRequest(w dns.ResponseWriter, r *dns.Msg) {
 	}
 
 	m := new(dns.Msg)
-	m.SetReply(r)
 	m.Authoritative = true
+	m.SetReply(r)
 	m.Answer = rrs
 	w.WriteMsg(m)
 }
