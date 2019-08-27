@@ -42,6 +42,9 @@ func main() {
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
 	select {
 	case s := <-sig:
-		logger.Warnf("main", "Signal (%s) received, stopping...", s)
+		logger.Infof("main", "Signal (%s) received, stopping...", s)
+		if err := server.Shutdown(); err != nil {
+			logger.Fatal("main", err)
+		}
 	}
 }
