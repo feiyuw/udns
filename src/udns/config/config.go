@@ -11,14 +11,14 @@ const (
 )
 
 var (
-	Cfg *config
+	Cfg = &config{}
 )
 
 type config struct {
 	Proto     string   `yaml:"proto"`
 	Port      int      `yaml:"port"`
 	LogLevel  string   `yaml:"logLevel"`
-	TTL       int      `yaml:"ttl"`
+	TTL       uint32   `yaml:"ttl"`
 	Zones     []string `yaml:"zones"`
 	ParentDNS string   `yaml:"parent"`
 	MyIP      string   `yaml:"myip"`
@@ -27,7 +27,7 @@ type config struct {
 
 func Init(cfgFile string) {
 	if cfgFile == "" {
-		logger.Infof("config", "config file is not set, use %s", defaultCfgFile)
+		logger.Warnf("config", "config file is not set, use %s", defaultCfgFile)
 		cfgFile = defaultCfgFile
 	}
 	data, err := ioutil.ReadFile(cfgFile)

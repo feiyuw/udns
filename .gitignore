@@ -8,3 +8,4 @@
 /udns
 vendor/
 .DS_Store
+local.dns

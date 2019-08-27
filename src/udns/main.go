@@ -8,7 +8,9 @@ import (
 	"strconv"
 	"syscall"
 	"udns/config"
+	"udns/handler"
 	"udns/logger"
+	"udns/storage"
 )
 
 func main() {
@@ -18,15 +20,17 @@ func main() {
 	flag.Parse()
 
 	config.Init(cfgFile)
+	logger.SetLogLevel(config.Cfg.LogLevel)
+	storage.Init(config.Cfg.Source)
 
 	addr := ":" + strconv.Itoa(config.Cfg.Port)
 	logger.Infof("main", "Listen to %s(%s), parent DNS '%s'", addr, config.Cfg.Proto, config.Cfg.ParentDNS)
 	server := &dns.Server{Addr: addr, Net: config.Cfg.Proto}
-	//for _, addr := range config.Cfg.Zones {
-	//dns.HandleFunc(addr, handler.OnSmartDNSRequest)
-	//}
-	//dns.HandleFunc(config.Cfg.MyIP, handler.OnMyIPRequest)
-	//dns.HandleFunc(".", handler.OnAnyDNSRequest)
+	for _, addr := range config.Cfg.Zones {
+		dns.HandleFunc(addr, handler.OnSmartDNSRequest)
+	}
+	dns.HandleFunc(config.Cfg.MyIP, handler.OnMyIPRequest)
+	dns.HandleFunc(".", handler.OnAnyDNSRequest)
 	go func() {
 		logger.Info("main", "Server start to listen...")
 		err := server.ListenAndServe()
