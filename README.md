@@ -1,5 +1,7 @@
 # Ultra simple DNS server support file storage
 
+[![Build Status](https://travis-ci.org/feiyuw/udns.svg?branch=master)](https://travis-ci.org/feiyuw/udns)
+
 ## Features
 
 - [ ] support A record
