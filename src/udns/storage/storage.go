@@ -21,3 +21,7 @@ func Init(dataSource string) {
 		logger.Fatal("storage", "unsupported data source %s", dataSource)
 	}
 }
+
+func Query(dnsType uint16, name string) ([]dns.RR, error) {
+	return ds.Query(dnsType, name)
+}
