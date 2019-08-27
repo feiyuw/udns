@@ -4,21 +4,11 @@
 
 ## Features
 
-- [*] support A record
-- [*] support to read DNS records from local file
-- [*] support to forward to parent DNS server if not found
-- [*] support to fetch myip by "my.ip"
+- [x] support A record
+- [x] support to read DNS records from local file
+- [x] support to forward to parent DNS server if not found
+- [x] support to fetch myip by "my.ip"
 - [ ] support CNAME record
 
 ## Installation
-
-### RHEL / CentOS
-
-### Debian / Ubuntu
-
-### Manual Installation
-
-## Configuration
-
-### Use local file as data source
 
