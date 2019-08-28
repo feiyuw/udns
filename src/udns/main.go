@@ -21,7 +21,6 @@ func main() {
 	flag.Parse()
 
 	config.Init(cfgFile)
-	logger.SetLogLevel(config.Cfg.LogLevel)
 	storage.Init(config.Cfg.Source)
 
 	addr := ":" + strconv.Itoa(config.Cfg.Port)

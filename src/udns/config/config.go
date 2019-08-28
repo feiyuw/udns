@@ -36,9 +36,11 @@ func Init(cfgFile string) {
 	if err != nil {
 		logger.Fatal("config", err)
 	}
-	if err = yaml.Unmarshal(data, Cfg); err != nil {
+	if err := yaml.Unmarshal(data, Cfg); err != nil {
 		logger.Fatal("config", err)
 	}
+
+	logger.SetLogLevel(Cfg.LogLevel)
 
 	if Cfg.ParentDNS == "auto" {
 		logger.Info("config", "try to detect parent DNS")
