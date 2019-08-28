@@ -12,6 +12,7 @@ var (
 
 type dnsStorage interface {
 	Query(dnsType uint16, name string) ([]dns.RR, error)
+	Shutdown()
 }
 
 func Init(dataSource string) {
@@ -24,4 +25,8 @@ func Init(dataSource string) {
 
 func Query(dnsType uint16, name string) ([]dns.RR, error) {
 	return ds.Query(dnsType, name)
+}
+
+func Shutdown() {
+	ds.Shutdown()
 }

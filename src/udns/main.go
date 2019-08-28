@@ -11,6 +11,7 @@ import (
 	"udns/handler"
 	"udns/logger"
 	"udns/storage"
+	"udns/watcher"
 )
 
 func main() {
@@ -44,7 +45,10 @@ func main() {
 	case s := <-sig:
 		logger.Infof("main", "Signal (%s) received, stopping...", s)
 		if err := server.Shutdown(); err != nil {
-			logger.Fatal("main", err)
+			logger.Error("main", err)
 		}
+		storage.Shutdown()
+		watcher.Stop()
+		logger.Info("main", "Bye.")
 	}
 }

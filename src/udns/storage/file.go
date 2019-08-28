@@ -9,11 +9,15 @@ import (
 	"strings"
 	"udns/config"
 	"udns/logger"
+	"udns/watcher"
 )
 
 func newFileStorage(filePath string) dnsStorage {
 	stor := &fileStorage{filePath: filePath}
-	stor.load()
+	if err := stor.load(); err != nil {
+		logger.Fatal("storage/file", err)
+	}
+	watcher.On(filePath, stor.load)
 	return stor
 }
 
@@ -21,17 +25,27 @@ type fileStorage struct {
 	filePath string
 }
 
+// Query used to fetch DNS record
 func (stor *fileStorage) Query(dnsType uint16, name string) ([]dns.RR, error) {
 	return Cache.Get(dnsType, name)
 }
 
-func (ds *fileStorage) load() {
+// Shutdown is used in server stop step
+func (stor *fileStorage) Shutdown() {
+	if err := watcher.Remove(stor.filePath); err != nil {
+		logger.Error("storage/file", err)
+	}
+}
+
+func (ds *fileStorage) load() error {
+	logger.Info("storage/file", "load DNS records from file storage")
 	file, err := os.Open(ds.filePath)
 	if err != nil {
-		logger.Fatalf("storage/file", "read data source error: %v", err)
-		return
+		return errors.New("read data source error: " + err.Error())
 	}
 	defer file.Close()
+
+	newCache := NewCache()
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
@@ -74,12 +88,16 @@ func (ds *fileStorage) load() {
 			logger.Errorf("storage/file", "parse record error: %v", err)
 			continue
 		}
-		Cache.Set(rrType, fqdn, rrs)
+		newCache.Set(rrType, fqdn, rrs)
 	}
 
+	UpdateCache(newCache)
+
 	if err := scanner.Err(); err != nil {
-		return
+		return err
 	}
+
+	return nil
 }
 
 func recordToA(fqdn string, ipStr string) ([]dns.RR, error) {

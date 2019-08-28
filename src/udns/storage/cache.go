@@ -33,8 +33,11 @@ func (c cache) Set(dnsType uint16, key string, value []dns.RR) {
 	typeCache[key] = value
 }
 
-func (c cache) Reset() {
-	for k := range c {
-		delete(c, k)
-	}
+func NewCache() cache {
+	return cache{}
+}
+
+// Reset current cache to empty, don't call it if you want to update records gracefully
+func UpdateCache(c cache) {
+	Cache = c
 }

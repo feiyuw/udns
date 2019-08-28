@@ -18,7 +18,7 @@ func TestFileStorage(t *testing.T) {
 	Convey("load dns records with empty file", t, func() {
 		ioutil.WriteFile("test_dns.data", []byte(""), 0644)
 		defer os.Remove("test_dns.data")
-		defer Cache.Reset()
+		defer UpdateCache(cache{})
 		newFileStorage("test_dns.data")
 		So(len(Cache), ShouldEqual, 0)
 	})
@@ -26,7 +26,7 @@ func TestFileStorage(t *testing.T) {
 	Convey("load dns records with comment line", t, func() {
 		ioutil.WriteFile("test_dns.data", []byte("# fqdn    ip     nettype"), 0644)
 		defer os.Remove("test_dns.data")
-		defer Cache.Reset()
+		defer UpdateCache(cache{})
 		newFileStorage("test_dns.data")
 		So(len(Cache), ShouldEqual, 0)
 	})
@@ -34,7 +34,7 @@ func TestFileStorage(t *testing.T) {
 	Convey("load dns records with empty line", t, func() {
 		ioutil.WriteFile("test_dns.data", []byte("\n\n"), 0644)
 		defer os.Remove("test_dns.data")
-		defer Cache.Reset()
+		defer UpdateCache(cache{})
 		newFileStorage("test_dns.data")
 		So(len(Cache), ShouldEqual, 0)
 	})
@@ -53,7 +53,7 @@ invalid3.dx.corp    10.1.2.10  A    invalid
 pypi.dx.internal    10.1.2.5,10.1.2.6  A
         `), 0644)
 		defer os.Remove("test_dns.data")
-		defer Cache.Reset()
+		defer UpdateCache(cache{})
 		ds := newFileStorage("test_dns.data")
 		So(len(Cache), ShouldEqual, 1)
 		So(len(Cache[dns.TypeA]), ShouldEqual, 3)
