@@ -49,10 +49,6 @@ func (ds *fileStorage) load() error {
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		line := strings.TrimSpace(scanner.Text())
-		if line == "" || line[0] == '#' {
-			continue
-		}
 		// # fqdn       ip           type(*_)
 		// a.dx.corp    10.1.2.17    A
 		// b.dx.corp    10.1.2.18
@@ -60,7 +56,11 @@ func (ds *fileStorage) load() error {
 		var err error
 		var rrType uint16
 
+		line := scanner.Text()
 		words := strings.Fields(line)
+		if len(words) == 0 || words[0][0] == '#' {
+			continue
+		}
 		fqdn := words[0]
 		if fqdn[len(fqdn)-1] != '.' {
 			fqdn += "."

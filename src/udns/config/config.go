@@ -3,7 +3,9 @@ package config
 import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"strings"
 	"udns/logger"
+	"udns/utils"
 )
 
 const (
@@ -36,5 +38,17 @@ func Init(cfgFile string) {
 	}
 	if err = yaml.Unmarshal(data, Cfg); err != nil {
 		logger.Fatal("config", err)
+	}
+
+	if Cfg.ParentDNS == "auto" {
+		logger.Info("config", "try to detect parent DNS")
+		gw := utils.GetDefaultGateway()
+		if gw == "" {
+			logger.Fatal("config", "cannot detect default gateway address")
+		}
+		Cfg.ParentDNS = gw + ":53"
+	} else if !strings.ContainsRune(Cfg.ParentDNS, ':') {
+		logger.Info("config", "parent DNS has no port set, use :53")
+		Cfg.ParentDNS += ":53"
 	}
 }
