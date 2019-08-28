@@ -1,0 +1,15 @@
+[Unit]
+Description=Ultra Simple DNS Service
+After=network.target
+
+[Service]
+Type=simple
+# Another Type option: forking
+User=root
+WorkingDirectory=/opt/udns
+ExecStart=/opt/udns/udns -cfg /opt/udns/udns.cfg.yml
+Restart=on-failure
+# Other Restart options: or always, on-abort, etc
+
+[Install]
+WantedBy=multi-user.target

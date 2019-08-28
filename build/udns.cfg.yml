@@ -2,7 +2,7 @@ proto: udp4
 port: 53
 logLevel: info
 ttl: 300
-zones:
+zones: # set NS zones like my.internal., "." means hajick all DNS records
   - .
 parent: auto
 myip: my.ip

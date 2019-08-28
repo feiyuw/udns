@@ -20,7 +20,8 @@ all: clean build test
 
 clean:
 	@echo cleaning...
-	@rm -rf $(TARGET)
+	@rm -rf ./build/$(TARGET)
+	@rm -rf ./build/*.rpm
 
 test:
 	@echo unit testing...
@@ -28,4 +29,8 @@ test:
 
 build:
 	@echo building...
-	cd src/udns; go build -o ../../$(TARGET) -ldflags "-X main.Version=$(VERSION)"
+	cd src/udns; go build -o ../../build/$(TARGET) -ldflags "-X main.Version=$(VERSION)"
+
+rpm:
+	@echo generate rpm...
+	cd build; fpm -s dir -t rpm --prefix /opt/udns -n udns -v $(VERSION) --after-upgrade ./start.sh --after-install ./start.sh --after-remove ./remove.sh .
