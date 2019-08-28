@@ -3,7 +3,7 @@ port: 53
 logLevel: info
 ttl: 300
 zones:
-  - my.internal.
+  - .
 parent: auto
 myip: my.ip
 source: file://local.dns
