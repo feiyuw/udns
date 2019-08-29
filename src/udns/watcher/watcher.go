@@ -16,8 +16,8 @@ var (
 		fsnotify.Remove,
 		fsnotify.Write,
 	}
-	stopEvt    = make(chan struct{}, 1)
-	stoppedEvt = make(chan struct{}, 1)
+	stopEvt    = make(chan struct{})
+	stoppedEvt = make(chan struct{})
 )
 
 func init() {
@@ -46,14 +46,14 @@ func On(file string, handler func() error) {
 
 // Stop stop the watching goroutine
 func Stop() {
-	stopEvt <- struct{}{}
+	close(stopEvt)
 	<-stoppedEvt
 	logger.Info("watcher", "stopped")
 }
 
 func watching() {
 	defer func() {
-		stoppedEvt <- struct{}{}
+		close(stoppedEvt)
 	}()
 	defer w.Close()
 
