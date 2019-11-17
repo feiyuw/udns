@@ -5,10 +5,6 @@ MAKEFLAGS+=-r
 .PHONY: all clean build test
 .DEFAULT: all
 
-# GO shit
-ROOT_DIR:=$(realpath $(CURDIR))
-export GOPATH:=$(ROOT_DIR)
-
 # version & build time
 VERSION:=$(shell git describe --dirty --tags)
 ifeq (,$(VERSION))
@@ -25,11 +21,11 @@ clean:
 
 test:
 	@echo unit testing...
-	cd src/udns; go test udns/...
+	go test udns/...
 
 build:
 	@echo building...
-	cd src/udns; go build -o ../../build/$(TARGET) -ldflags "-X main.Version=$(VERSION)"
+	go build -o ../build/$(TARGET) -ldflags "-X main.Version=$(VERSION)"
 
 rpm:
 	@echo generate rpm...
