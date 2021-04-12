@@ -25,7 +25,7 @@ test:
 
 build:
 	@echo building...
-	go build -o ../build/$(TARGET) -ldflags "-X main.Version=$(VERSION)"
+	go build -o ./build/$(TARGET) -ldflags "-X main.Version=$(VERSION)"
 
 rpm:
 	@echo generate rpm...

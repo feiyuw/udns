@@ -7,7 +7,6 @@
 /bin/
 /udns
 /build/udns
-*.rpm
 vendor/
 .DS_Store
 local.dns
