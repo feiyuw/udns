@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"github.com/miekg/dns"
 	"os"
 	"os/signal"
 	"strconv"
@@ -12,6 +11,8 @@ import (
 	"udns/logger"
 	"udns/storage"
 	"udns/watcher"
+
+	"github.com/miekg/dns"
 )
 
 func main() {
@@ -26,17 +27,10 @@ func main() {
 	addr := ":" + strconv.Itoa(config.Cfg.Port)
 	logger.Infof("main", "Listen to %s(%s), parent DNS '%s'", addr, config.Cfg.Proto, config.Cfg.ParentDNS)
 	server := &dns.Server{Addr: addr, Net: config.Cfg.Proto}
-	includingAny := false
 	for _, addr := range config.Cfg.Zones {
 		dns.HandleFunc(addr, handler.OnSmartDNSRequest)
-		if addr == "." {
-			includingAny = true
-		}
 	}
 	dns.HandleFunc(config.Cfg.MyIP, handler.OnMyIPRequest)
-	if includingAny == false {
-		dns.HandleFunc(".", handler.OnAnyDNSRequest)
-	}
 	go func() {
 		logger.Info("main", "Server start to listen...")
 		err := server.ListenAndServe()
